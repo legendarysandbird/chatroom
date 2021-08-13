@@ -1,0 +1,12 @@
+#chatbar {
+    position: fixed;
+    bottom: 5px;
+    padding: 5px;
+    background-color: gray;
+    width: 95%;
+}
+
+::placeholder {
+    color: white;
+    opacity: 1;
+}
