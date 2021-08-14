@@ -24,12 +24,12 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + url);
 });
 
-app.get('/chat', function(req, res) {
-	res.send(text);
-});
-
 app.post('/', (req, res) => {
 	text += `[${req.connection.remoteAddress}]: ${req.body.message}<br>`;
+});
+
+app.get('/chat', function(req, res) {
+	res.send(text);
 });
 
 app.listen(port, () => {
