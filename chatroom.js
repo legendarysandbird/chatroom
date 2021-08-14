@@ -7,6 +7,7 @@ const hostname = '10.0.0.100';
 const port = 8000;
 
 app.use(express.static('public'));
+app.use(bodyParser());
 
 app.get('/', function(req, res) {
 	console.log(req.url);
