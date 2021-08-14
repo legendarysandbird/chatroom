@@ -6,6 +6,12 @@
     width: 95%;
 }
 
+#history {
+    height: 500px;
+    width: 90%;
+    background-color: gray;
+}
+
 ::placeholder {
     color: black;
     opacity: 1;

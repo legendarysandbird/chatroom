@@ -6,6 +6,8 @@ const app = express();
 const hostname = '10.0.0.100';
 const port = 8000;
 
+let text = '';
+
 app.use(express.static('public'));
 app.use(bodyParser());
 
@@ -22,8 +24,12 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + url);
 });
 
+app.get('/chat', function(req, res) {
+	res.send(text);
+});
+
 app.post('/', (req, res) => {
-	res.send(`Data is ${req.body.message}.`)
+	text += `[${req.connection.remoteAddress}]: ${req.body.message}<br>`;
 });
 
 app.listen(port, () => {
