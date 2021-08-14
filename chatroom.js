@@ -1,29 +1,33 @@
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
 
 const hostname = '10.0.0.100';
 const port = 8000;
 
+app.use(express.static('public'));
 
-http.createServer((req, res) => {
-	res.statusCode = 200;
-	res.setHeader('Content-Type', 'text/html');
-	let url = req.url
-	if (url == '/') url += 'index.html'
-	if (url == '/style.css') {
-		res.setHeader('Content-Type', 'text/css');
+app.get('/', function(req, res) {
+	console.log(req.url);
+	let url;
+	if (req.url == "/") {
+		url = "/index.html";
 	}
-	fs.readFile('./' + url, function (err, html) {
-		if (err) {
-			res.write('404')
-			res.end();
-			return
-		}
-		res.write(html)
-		res.end();
-	});
-}).listen(port);
+	else {
+		
+		url = req.url;
+	}
+	res.sendFile(__dirname + url);
+});
 
-console.log(`Server running at http://${hostname}:${port}/`);
+app.post('/', (req, res) => {
+	res.send(`Data is ${req.body.message}.`)
+});
+
+app.listen(port, () => {
+	console.log(`Server running at http://${hostname}:${port}/`);
+});
+
 
 

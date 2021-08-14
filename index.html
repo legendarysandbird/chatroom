@@ -2,12 +2,15 @@
 <html>
     <head>
         <title>Chat Room</title>
-        <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" type="text/css" href="/style.css">
     </head>
     <body>
         <h1>
             Hello Cruel World
         </h1>
-        <input id="chatbar" type="text" placeholder="Type your messages here!"></input>
+        <form id="chatbar" action="http://localhost:8000/" method="POST">
+            <input type="text" placeholder="Type your messages here!" name="message"></input>
+            <button type="submit">Send</button>
+        </form>
     </body>
 </html>
