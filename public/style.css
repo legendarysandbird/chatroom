@@ -10,6 +10,7 @@
     height: 500px;
     width: 90%;
     background-color: gray;
+    overflow-y: scroll;
 }
 
 ::placeholder {

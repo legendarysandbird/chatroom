@@ -6,14 +6,14 @@ function execute() {
 		response.text().then( (text) => {
 			history.innerHTML = text;
 		});
+		return "Something";
 	}).then(function(data) {
 		console.log(data);
 	}).catch(function() {
 		console.log("Booo");
+	}).finally(() => {
+		setTimeout(execute, 500);
 	});
-
-	setTimeout(execute, 1000);
 }
 
 execute();
-
