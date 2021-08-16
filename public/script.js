@@ -1,10 +1,40 @@
 const button = document.getElementById("button");
 const history = document.getElementById("history");
+const text = document.getElementById("text");
+
+let username = '';
+while (username == '') {
+	username = prompt("Enter your name: ");
+}
+
+
+button.onclick = () => {
+	let time = new Date().toLocaleTimeString('en-US', { hour12: false,
+														hour: "numeric",
+														minute: "numeric"});
+	if (text.value != '') {
+		fetch("/", {
+			method: "POST",
+			body: JSON.stringify({
+				name: username,
+				message: text.value,
+				date: time
+			}),
+			headers: {
+				'Content-type': 'application/json'
+			}
+		}).then(text.value = '')
+	}
+}
 
 function execute() {
 	fetch("/chat").then(function(response) {
 		response.text().then( (text) => {
-			history.innerHTML = text;
+			history.innerHTML = '';
+			let items = JSON.parse(text);
+			items.forEach( item => {
+				history.innerHTML += `${item}<br>`;		
+			});
 		});
 		return "Something";
 	}).then(function(data) {

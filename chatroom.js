@@ -1,15 +1,15 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const ip = require("ip");
 
 const app = express();
 
-const hostname = '10.0.0.100';
+const hostname = ip.address();
 const port = 8000;
 
-let text = '';
+let messages = [];
 
 app.use(express.static('public'));
-app.use(bodyParser());
+app.use(express.json());
 
 app.get('/', function(req, res) {
 	console.log(req.url);
@@ -25,11 +25,11 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', (req, res) => {
-	text += `[${req.connection.remoteAddress}]: ${req.body.message}<br>`;
+	messages.push(`[${req.body.date}] ${req.body.name}: ${req.body.message}`);
 });
 
 app.get('/chat', function(req, res) {
-	res.send(text);
+	res.send(messages);
 });
 
 app.listen(port, () => {
