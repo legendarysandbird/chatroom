@@ -28,6 +28,10 @@ app.post('/', (req, res) => {
 	messages.push(`[${req.body.date}] ${req.body.name}: ${req.body.message}`);
 });
 
+app.post('/clear', (req, res) => {
+	messages = [];
+});
+
 app.get('/chat', function(req, res) {
 	res.send(messages);
 });

@@ -13,17 +13,25 @@ button.onclick = () => {
 														hour: "numeric",
 														minute: "numeric"});
 	if (text.value != '') {
-		fetch("/", {
-			method: "POST",
-			body: JSON.stringify({
-				name: username,
-				message: text.value,
-				date: time
-			}),
-			headers: {
-				'Content-type': 'application/json'
+		if (text.value == "!clear" && username == 'admin') {
+			fetch("/clear", {
+				method: "POST"
+			}).then(text.value = '');
+		}
+		else {
+			fetch("/", {
+				method: "POST",
+				body: JSON.stringify({
+					name: username,
+					message: text.value,
+					date: time
+				}),
+				headers: {
+					'Content-type': 'application/json'
 			}
 		}).then(text.value = '')
+
+		}
 	}
 }
 
