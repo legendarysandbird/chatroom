@@ -28,10 +28,10 @@ button.onclick = () => {
 		if (text.value == "!clear" && username == 'admin') {
 			fetch("/clear", {
 				method: "POST"
-			}).then(text.value = '');
+			}).then(history.value = '');
 		}
 		else {
-			fetch("/", {
+			let x = fetch("/", {
 				method: "POST",
 				body: JSON.stringify({
 					name: username,
@@ -40,8 +40,17 @@ button.onclick = () => {
 				}),
 				headers: {
 					'Content-type': 'application/json'
-			}
-		}).then(text.value = '')
+				}
+			});
+
+			x.then((data) => {
+				text.value = ''
+				console.log(data);
+			}).catch(function() {
+				alert('Chat disconnected!');
+				location.reload();
+			});
+
 
 		}
 	}

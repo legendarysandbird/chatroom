@@ -26,14 +26,17 @@ app.get('/', function(req, res) {
 
 app.post('/', (req, res) => {
 	messages.push(`[${req.body.date}] ${req.body.name}: ${req.body.message}`);
+	res.end();
 });
 
 app.post('/clear', (req, res) => {
 	messages = [];
+	res.end()
 });
 
 app.get('/chat', function(req, res) {
 	res.send(messages);
+	res.end()
 });
 
 app.listen(port, () => {
