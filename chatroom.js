@@ -6,6 +6,12 @@ const app = express();
 const hostname = ip.address();
 const port = 8000;
 
+const emojis = {
+	"fa-laugh-squint": 0,
+	"fa-smile-beam": 0,
+	"fa-sad-cry": 0
+};
+
 let messages = [];
 
 app.use(express.static('public'));
@@ -25,7 +31,8 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', (req, res) => {
-	messages.push(`[${req.body.date}] ${req.body.name}: ${req.body.message}`);
+	req.body.emojis = emojis;
+	messages.push(req.body);
 	res.end();
 });
 

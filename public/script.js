@@ -10,13 +10,41 @@ while (username == '') {
 function displayChat(to, items) {
 	// Start with empty slate
 	to.innerHTML = '';
+	to.classList.add("textLine");
 
 	// Add text one line at a time
 	items.forEach(item => {
+		console.log(item);
+		let str = `[${item.date}] ${item.name}: ${item.message}`;
 		const line = document.createElement("p");
-		const words = document.createTextNode(item);
+		const words = document.createTextNode(str);
 		line.append(words);
 		to.appendChild(line);		
+
+		const emojis = document.createElement("div");
+		emojis.classList.add("emojis");
+
+		const keys = Object.keys(item.emojis);
+		keys.forEach(emoji => {
+			//console.log(emoji);
+			const sym = document.createElement("div");
+			sym.classList.add("emoji");
+			
+			const icon = document.createElement("i");
+			icon.classList.add("far");
+			icon.classList.add(emoji);
+			const num = document.createElement("p");
+			const numText = document.createTextNode(item.emojis[emoji]);
+
+			num.append(numText);
+			
+			sym.appendChild(icon);
+			sym.appendChild(num);
+
+			emojis.append(sym);
+		});
+
+		to.append(emojis);
 	});
 }
 
@@ -45,7 +73,7 @@ button.onclick = () => {
 
 			x.then((data) => {
 				text.value = ''
-				console.log(data);
+				//console.log(data);
 			}).catch(function() {
 				alert('Chat disconnected!');
 				location.reload();
@@ -64,9 +92,9 @@ function execute() {
 		});
 		return "Something";
 	}).then(function(data) {
-		console.log(data);
+		//console.log(data);
 	}).catch(function() {
-		console.log("Booo");
+		//console.log("Booo");
 	}).finally(() => {
 		setTimeout(execute, 500);
 	});

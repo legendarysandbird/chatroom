@@ -1,3 +1,20 @@
+p {
+	padding: 0px;
+	margin: 3px;
+}
+
+.textLine {
+}
+
+.emojis {
+	display: flex;
+}
+
+.emoji {
+	display: flex;
+	padding: 0px;
+}
+
 #chatbar {
     position: fixed;
     bottom: 5px;
