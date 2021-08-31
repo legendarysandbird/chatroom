@@ -13,6 +13,7 @@ const emojis = {
 };
 
 let messages = [];
+let numMessages = 0;
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -31,14 +32,21 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', (req, res) => {
-	req.body.emojis = emojis;
+	req.body.emojis = {...emojis};
+	req.body.id = numMessages;
 	messages.push(req.body);
+	numMessages += 1;
 	res.end();
 });
 
 app.post('/clear', (req, res) => {
 	messages = [];
-	res.end()
+	res.end();
+});
+
+app.post('/emoji/add', (req, res) => {
+	messages[req.body.id]["emojis"][req.body.emoji] += 1;
+	res.end();
 });
 
 app.get('/chat', function(req, res) {

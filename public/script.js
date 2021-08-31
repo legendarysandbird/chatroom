@@ -2,19 +2,21 @@ const button = document.getElementById("button");
 const history = document.getElementById("history");
 const text = document.getElementById("text");
 
+let allItems;
+
 let username = '';
 while (username == '') {
 	username = prompt("Enter your name: ");
 }
 
-function displayChat(to, items) {
+function displayChat(to) {
 	// Start with empty slate
 	to.innerHTML = '';
 	to.classList.add("textLine");
 
 	// Add text one line at a time
-	items.forEach(item => {
-		console.log(item);
+	allItems.forEach(item => {
+		//console.log(allItems);
 		let str = `[${item.date}] ${item.name}: ${item.message}`;
 		const line = document.createElement("p");
 		const words = document.createTextNode(str);
@@ -30,7 +32,22 @@ function displayChat(to, items) {
 			const sym = document.createElement("div");
 			sym.classList.add("emoji");
 			
-			const icon = document.createElement("i");
+			const icon = document.createElement("button");
+			icon.onclick = () => {
+				fetch("/emoji/add", {
+					method: "POST",
+					body: JSON.stringify({
+						id: item.id,
+						emoji: emoji
+					}),
+					headers: {
+						'Content-type': 'application/json'
+					}
+				}).then(() => {
+					console.log("Done");
+				});	
+			}
+
 			icon.classList.add("far");
 			icon.classList.add(emoji);
 			const num = document.createElement("p");
@@ -56,7 +73,9 @@ button.onclick = () => {
 		if (text.value == "!clear" && username == 'admin') {
 			fetch("/clear", {
 				method: "POST"
-			}).then(history.value = '');
+			}).then(() => {
+				history.value = ''
+			});
 		}
 		else {
 			let x = fetch("/", {
@@ -87,8 +106,8 @@ button.onclick = () => {
 function execute() {
 	fetch("/chat").then(function(response) {
 		response.text().then( (text) => {
-			let items = JSON.parse(text);
-			displayChat(history, items);
+			allItems = JSON.parse(text);
+			displayChat(history);
 		});
 		return "Something";
 	}).then(function(data) {
