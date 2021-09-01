@@ -1,5 +1,6 @@
 const express = require('express');
 const ip = require("ip");
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -14,9 +15,11 @@ const emojis = {
 
 let messages = [];
 let numMessages = 0;
+let names = [];
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use(cookieParser());
 
 app.get('/', function(req, res) {
 	console.log(req.url);
@@ -25,10 +28,23 @@ app.get('/', function(req, res) {
 		url = "/index.html";
 	}
 	else {
-		
 		url = req.url;
 	}
 	res.sendFile(__dirname + url);
+});
+
+app.get("/username", function(req, res) {
+	console.log(req.cookies.username);
+	res.send(JSON.stringify(req.cookies.username));
+});
+
+app.get('/chat', function(req, res) {
+	res.send(messages);
+});
+
+app.get('/clear/name', function(req, res) {
+	res.clearCookie("username");	
+	res.end();
 });
 
 app.post('/', (req, res) => {
@@ -36,6 +52,17 @@ app.post('/', (req, res) => {
 	req.body.id = numMessages;
 	messages.push(req.body);
 	numMessages += 1;
+	res.end();
+});
+
+app.post('/login', (req, res) => {
+	if (req.body.username in names) {
+		res.end();
+	}
+
+	res.cookie("username", req.body.username, {
+		sameSite: 'lax'
+	});
 	res.end();
 });
 
@@ -47,11 +74,6 @@ app.post('/clear', (req, res) => {
 app.post('/emoji/add', (req, res) => {
 	messages[req.body.id]["emojis"][req.body.emoji] += 1;
 	res.end();
-});
-
-app.get('/chat', function(req, res) {
-	res.send(messages);
-	res.end()
 });
 
 app.listen(port, () => {
