@@ -4,30 +4,31 @@ const text = document.getElementById("text");
 const clearName = document.getElementById("clearname");
 
 let allItems;
-let username = undefined;
+let username = '';
 
 function login() {
 	fetch("/username").then((res) => {
 		res.text().then((text) => {
-			console.log(text);
 			username = text;
+			while (username == '') {
+				username = prompt("Enter your name: ");
+				fetch("/login", {
+					method: "POST",
+					body: JSON.stringify({"username": username}),
+					headers: {
+						'Content-type': 'application/json'
+					}
+				}).then((res) => {
+					if (username == '') {
+						alert("That name is already taken!");
+					}
+					login();
+				});
+			}	
 		});
 	});
 
-	console.log(username);
-
-	while (username == undefined) {
-		username = prompt("Enter your name: ");
-		fetch("/login", {
-			method: "POST",
-			body: JSON.stringify({"username": username}),
-			headers: {
-				'Content-type': 'application/json'
-			}
-		}).then((res) => {
-			login();
-		});
-	}	
+	//console.log(username);
 }
 
 function displayChat(to) {

@@ -15,7 +15,6 @@ const emojis = {
 
 let messages = [];
 let numMessages = 0;
-let names = [];
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -34,8 +33,8 @@ app.get('/', function(req, res) {
 });
 
 app.get("/username", function(req, res) {
-	console.log(req.cookies.username);
-	res.send(JSON.stringify(req.cookies.username));
+	//console.log(req.cookies.username);
+	res.send(req.cookies.username);
 });
 
 app.get('/chat', function(req, res) {
@@ -56,13 +55,7 @@ app.post('/', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-	if (req.body.username in names) {
-		res.end();
-	}
-
-	res.cookie("username", req.body.username, {
-		sameSite: 'lax'
-	});
+	res.cookie("username", req.body.username);
 	res.end();
 });
 
